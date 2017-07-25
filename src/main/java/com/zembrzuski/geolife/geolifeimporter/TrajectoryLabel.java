@@ -12,6 +12,9 @@ public class TrajectoryLabel {
     private LocalDateTime end;
     private TransportationMode mode;
 
+    public TrajectoryLabel() {
+    }
+
     public TrajectoryLabel(String inp) {
         String[] splitted = inp.split("\t");
 
@@ -72,5 +75,14 @@ public class TrajectoryLabel {
         result = 31 * result + (end != null ? end.hashCode() : 0);
         result = 31 * result + (mode != null ? mode.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TrajectoryLabel{" +
+                "start=" + start +
+                ", end=" + end +
+                ", mode=" + mode +
+                '}';
     }
 }

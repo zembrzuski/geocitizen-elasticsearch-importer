@@ -7,7 +7,10 @@ public enum TransportationMode {
     BUS("bus"),
     TRAIN("train"),
     TAXI("taxi"),
-    WALK("walk");
+    WALK("walk"),
+    SUBWAY("subway"),
+    AIRPLANE("airplane"),
+    CAR("car");
 
     private final String text;
 
