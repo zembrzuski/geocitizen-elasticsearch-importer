@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,7 +33,8 @@ public class TrajectoryEnricher {
                 .map(GeoLocationPoint::new)
                 .collect(Collectors.toMap(
                         o -> o,
-                        o -> doTheFilter(someLabels.stream(), o))
+                        o -> doTheFilter(someLabels.stream(), o),
+                        (a, b) -> a)
                 );
 
         TreeMap<GeoLocationPoint, TrajectoryLabel> sorted =
