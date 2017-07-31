@@ -1,6 +1,8 @@
 package com.zembrzuski.geolife.geolifeimporter;
 
 import com.google.common.collect.Lists;
+import com.zembrzuski.geolife.geolifeimporter.entity.TrajectoryLabel;
+import com.zembrzuski.geolife.geolifeimporter.helpers.FileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.zembrzuski.geolife.geolifeimporter;
+package com.zembrzuski.geolife.geolifeimporter.entity;
 
 /**
  * Tipos de transporte possiveis.

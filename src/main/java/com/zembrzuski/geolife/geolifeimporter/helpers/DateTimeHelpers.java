@@ -1,4 +1,4 @@
-package com.zembrzuski.geolife.geolifeimporter;
+package com.zembrzuski.geolife.geolifeimporter.helpers;
 
 import org.springframework.stereotype.Component;
 

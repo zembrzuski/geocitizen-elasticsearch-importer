@@ -1,4 +1,4 @@
-package com.zembrzuski.geolife.geolifeimporter;
+package com.zembrzuski.geolife.geolifeimporter.entity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
