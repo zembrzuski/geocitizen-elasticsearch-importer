@@ -23,19 +23,6 @@ public class GeolifeImporterApplication implements CommandLineRunner {
 
         directoryProcessor.processDirectory("010");
 
-//        List<TrajectoryLabel> someLabels = labelsLoader.load(LABELS_PATH);
-
-//        TreeMap<GeoLocationPoint, TrajectoryLabel> trajectory =
-//                trajectoryEnricher.enrichTrajectory(FILE_PATH, someLabels);
-
-//        for (GeoLocationPoint p : trajectory.keySet()) {
-//            if (trajectory.get(p).getMode() != null) {
-//                System.out.println(p);
-//                System.out.println(trajectory.get(p));
-//                System.out.println();
-//            }
-//        }
-
     }
 
 
