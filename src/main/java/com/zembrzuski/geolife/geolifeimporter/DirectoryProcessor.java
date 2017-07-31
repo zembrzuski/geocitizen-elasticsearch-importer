@@ -8,7 +8,13 @@ import com.zembrzuski.geolife.geolifeimporter.entity.TrajectoryLabel;
 import com.zembrzuski.geolife.geolifeimporter.entity.TrajectoryToPersist;
 import com.zembrzuski.geolife.geolifeimporter.helpers.LocalDateAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -17,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -35,14 +42,21 @@ public class DirectoryProcessor {
 
     private String directory;
     private Gson gson;
+    private RestTemplate restTemplate;
 
     @PostConstruct
     public void init() {
         this.directory = "/home/nozes/labs/Geolife Trajectories 1.3/Data/%s/";
+
+        // TODO tacar isso num bean para fazer autowired.
         this.gson = new GsonBuilder()
-                //.setPrettyPrinting()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
                 .create();
+
+        // TODO tacar isso num bean para fazer autowired.
+        this.restTemplate = new RestTemplateBuilder()
+                .basicAuthorization("username", "passwd")
+                .build();
     }
 
 
@@ -54,27 +68,24 @@ public class DirectoryProcessor {
         File directory = new File(trajectoriesPath);
         List<File> files = Lists.newArrayList(directory.listFiles());
 
-        List<TrajectoryToPersist> trajectories = files
-                .stream()
+        List<String> collect = files.stream()
                 .map(file -> enrichTrajectory(someLabels, file))
                 .map(x -> new TrajectoryToPersist(userId, x.get()))
+                .map(x -> gson.toJson(x))
+                .limit(1)
                 .collect(Collectors.toList());
 
 
-        TrajectoryToPersist first = trajectories.iterator().next();
+        String first = collect.iterator().next();
+        doPostToElasticsearch(first);
 
-        String s = gson.toJson(first);
-        System.out.println(s);
+    }
 
-        System.out.println(trajectories.size());
-        System.out.println(trajectories.size());
-        System.out.println(trajectories.size());
-        System.out.println(trajectories.size());
-        System.out.println(trajectories.size());
-        System.out.println(trajectories.size());
-        System.out.println(trajectories.size());
-
-
+    private void doPostToElasticsearch(String payload) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+        restTemplate.postForObject("http://192.168.0.16:9200/geocitizen_one/group", payload, String.class, entity);
     }
 
     private Optional<TreeMap<Path, TrajectoryLabel>> enrichTrajectory(List<TrajectoryLabel> someLabels, File file) {
