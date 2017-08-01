@@ -1,0 +1,28 @@
+PUT geocitizen_one/
+{
+    "mappings": {
+      "group": {
+        "properties": {
+          "path": {
+            "properties": {
+              "point": {
+                "type": "geo_shape"
+              },
+              "timestamp": {
+                "type": "date"
+              }
+            }
+          },
+          "userId": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    }
+}
