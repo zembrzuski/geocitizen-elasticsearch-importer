@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -61,31 +62,50 @@ public class DirectoryProcessor {
 
 
     public void processDirectory(String userId) throws IOException {
+        System.out.println("comecou" + userId);
         String directoryPath = String.format(directory, userId);
 
         List<TrajectoryLabel> someLabels = labelsLoader.load(directoryPath + "labels.txt");
         String trajectoriesPath = directoryPath + "/Trajectory/";
         File directory = new File(trajectoriesPath);
         List<File> files = Lists.newArrayList(directory.listFiles());
+//        List<File> files = Lists.newArrayList(
+//                new File("/home/nozes/labs/Geolife Trajectories 1.3/Data/020/Trajectory/20110911000506.plt"));
 
-        List<String> collect = files.stream()
+
+        System.out.println("ae");
+
+        // TODO a better idea would be to use bulk api to post content to elasticsearch.
+        files.stream()
                 .map(file -> enrichTrajectory(someLabels, file))
                 .map(x -> new TrajectoryToPersist(userId, x.get()))
-                .map(x -> gson.toJson(x))
-                .limit(1)
-                .collect(Collectors.toList());
+                .forEach(this::doPostToElasticsearch);
 
-
-        String first = collect.iterator().next();
-        doPostToElasticsearch(first);
-
+        System.out.println("acabou" + userId);
     }
 
-    private void doPostToElasticsearch(String payload) {
+    private void doPostToElasticsearch(TrajectoryToPersist trajectoryToPersist) {
+        String payload = gson.toJson(trajectoryToPersist);
+        System.out.println(payload);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        restTemplate.postForObject("http://192.168.0.16:9200/geocitizen_one/group", payload, String.class, entity);
+
+        try {
+            restTemplate.postForObject("http://192.168.0.16:9200/geocitizen_one/group", payload, String.class, entity);
+        } catch (HttpClientErrorException e) {
+            // se deu pau, assumo que eh payload muito grande. pode ser um tiro no pe, mas por enquanto
+            // nao me importa
+            List<Path> firstPart = trajectoryToPersist.getPath().subList(0, trajectoryToPersist.getPath().size() / 2);
+            List<Path> secondPart = trajectoryToPersist.getPath().subList(trajectoryToPersist.getPath().size() / 2, trajectoryToPersist.getPath().size());
+
+            TrajectoryToPersist firstToPersist = new TrajectoryToPersist(trajectoryToPersist.getUserId(), firstPart);
+            TrajectoryToPersist secondToPersist = new TrajectoryToPersist(trajectoryToPersist.getUserId(), secondPart);
+
+            System.out.println("entrou na recursao");
+            doPostToElasticsearch(firstToPersist);
+            doPostToElasticsearch(secondToPersist);
+        }
     }
 
     private Optional<TreeMap<Path, TrajectoryLabel>> enrichTrajectory(List<TrajectoryLabel> someLabels, File file) {

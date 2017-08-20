@@ -10,7 +10,11 @@ public enum TransportationMode {
     WALK("walk"),
     SUBWAY("subway"),
     AIRPLANE("airplane"),
-    CAR("car");
+    CAR("car"),
+    BIKE("bike"),
+    BOAT("boat"),
+    RUN("run"),
+    MOTORCYCLE("motorcycle");
 
     private final String text;
 

@@ -20,6 +20,11 @@ public class TrajectoryToPersist {
         this.path = fromTreeMap(geoLocationPointTrajectoryLabelTreeMap);
     }
 
+    public TrajectoryToPersist(String userId, List<Path> path) {
+        this.userId = userId;
+        this.path = path;
+    }
+
     private List<Path> fromTreeMap(TreeMap<Path, TrajectoryLabel> geoLocationPointTrajectoryLabelTreeMap) {
         List<Path> x = Lists.newArrayList();
 

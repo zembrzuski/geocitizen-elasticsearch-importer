@@ -21,7 +21,10 @@ public class GeolifeImporterApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        directoryProcessor.processDirectory("010");
+        for(int i = 20 ; i <= 181 ; i++) {
+            String formatted = String.format("%03d", i);
+            directoryProcessor.processDirectory(formatted);
+        }
 
     }
 
