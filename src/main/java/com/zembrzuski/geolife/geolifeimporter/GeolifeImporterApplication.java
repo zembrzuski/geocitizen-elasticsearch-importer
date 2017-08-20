@@ -21,7 +21,7 @@ public class GeolifeImporterApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        for(int i = 20 ; i <= 181 ; i++) {
+        for(int i = 1 ; i <= 181 ; i++) {
             String formatted = String.format("%03d", i);
             directoryProcessor.processDirectory(formatted);
         }

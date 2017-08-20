@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -24,8 +23,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * Todo pipeline de importacao de conteudo.
@@ -40,6 +37,8 @@ public class DirectoryProcessor {
 
     @Autowired private LabelsLoader labelsLoader;
     @Autowired private TrajectoryEnricher trajectoryEnricher;
+
+    private static final String ELASTICSEARCH_HOST = "localhost";
 
     private String directory;
     private Gson gson;
@@ -92,7 +91,7 @@ public class DirectoryProcessor {
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 
         try {
-            restTemplate.postForObject("http://192.168.0.16:9200/geocitizen_one/group", payload, String.class, entity);
+            restTemplate.postForObject("http://" + ELASTICSEARCH_HOST + ":9200/geocitizen_one/group", payload, String.class, entity);
         } catch (HttpClientErrorException e) {
             // se deu pau, assumo que eh payload muito grande. pode ser um tiro no pe, mas por enquanto
             // nao me importa
