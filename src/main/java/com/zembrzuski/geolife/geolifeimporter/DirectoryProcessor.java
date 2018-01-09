@@ -46,7 +46,7 @@ public class DirectoryProcessor {
 
     @PostConstruct
     public void init() {
-        this.directory = "/home/nozes/labs/Geolife Trajectories 1.3/Data/%s/";
+        this.directory = "/home/rodrigo/labs/mestrado/geolife-data/Data/%s/";
 
         // TODO tacar isso num bean para fazer autowired.
         this.gson = new GsonBuilder()
@@ -55,7 +55,6 @@ public class DirectoryProcessor {
 
         // TODO tacar isso num bean para fazer autowired.
         this.restTemplate = new RestTemplateBuilder()
-                .basicAuthorization("username", "passwd")
                 .build();
     }
 
@@ -85,13 +84,12 @@ public class DirectoryProcessor {
 
     private void doPostToElasticsearch(TrajectoryToPersist trajectoryToPersist) {
         String payload = gson.toJson(trajectoryToPersist);
-        System.out.println(payload);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+        HttpEntity<String> entity = new HttpEntity<String>(payload, headers);
 
         try {
-            restTemplate.postForObject("http://" + ELASTICSEARCH_HOST + ":9200/geocitizen_one/group", payload, String.class, entity);
+            restTemplate.postForObject("http://" + ELASTICSEARCH_HOST + ":9200/geolife_one/group", entity, String.class);
         } catch (HttpClientErrorException e) {
             // se deu pau, assumo que eh payload muito grande. pode ser um tiro no pe, mas por enquanto
             // nao me importa
@@ -101,7 +99,6 @@ public class DirectoryProcessor {
             TrajectoryToPersist firstToPersist = new TrajectoryToPersist(trajectoryToPersist.getUserId(), firstPart);
             TrajectoryToPersist secondToPersist = new TrajectoryToPersist(trajectoryToPersist.getUserId(), secondPart);
 
-            System.out.println("entrou na recursao");
             doPostToElasticsearch(firstToPersist);
             doPostToElasticsearch(secondToPersist);
         }
