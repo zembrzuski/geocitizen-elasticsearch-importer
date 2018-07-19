@@ -27,7 +27,7 @@ public class Main implements CommandLineRunner {
          * Veja o mapeamento correto em elasticsearch_info.txt
          */
 
-        for(int i = 1 ; i <= 181 ; i++) {
+        for(int i = 0 ; i <= 181 ; i++) {
             String formatted = String.format("%03d", i);
             directoryProcessor.processDirectory(formatted);
         }

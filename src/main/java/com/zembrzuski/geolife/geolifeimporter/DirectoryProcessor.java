@@ -46,7 +46,7 @@ public class DirectoryProcessor {
 
     @PostConstruct
     public void init() {
-        this.directory = "/home/rodrigo/labs/mestrado/geolife-data/Data/%s/";
+        this.directory = "/home/zem/labs/msc/geolife_data/Data/%s/";
 
         // TODO tacar isso num bean para fazer autowired.
         this.gson = new GsonBuilder()
