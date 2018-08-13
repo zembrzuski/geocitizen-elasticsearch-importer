@@ -25,9 +25,11 @@ public class MainSimpleGeoJson implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws IOException {
-        String filePath = "/home/zembrzuski/labs/msccc/geolife_data/Data/000";
+        //String filePath = "/home/zembrzuski/labs/msccc/geolife_data/Data/000";
+        String filePath = "/home/zem/labs/msc/geolife_data/Data/002";
         List<String> fileContent = directoryProcessor.readDirectory(filePath);
-        Files.write(Paths.get("//home/zembrzuski/labs/msccc/geolife_csvs_for_uber/000.csv"), fileContent);
+        String output = "/home/zem/Desktop/002.csv";
+        Files.write(Paths.get(output), fileContent);
     }
 
 }

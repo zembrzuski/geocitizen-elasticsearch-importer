@@ -16,6 +16,9 @@ public class DirectoryProcessorForCsv {
     @Autowired
     private SingleFileProcessor singleFileProcessor;
 
+    @Autowired
+    private SingleDayConverter singleDayConverter;
+
     public List<String> readDirectory(String directoryPath) throws IOException {
         Stream<String> header = Stream.of("latitude,longitude,timestamp");
 
@@ -23,6 +26,7 @@ public class DirectoryProcessorForCsv {
                 .walk(Paths.get(directoryPath))
                 .filter(x -> x.toFile().isFile())
                 .flatMap(x -> singleFileProcessor.readFile(x))
+                .map(x -> singleDayConverter.convert(x))
                 ;
 
         return Stream.concat(header, body)
