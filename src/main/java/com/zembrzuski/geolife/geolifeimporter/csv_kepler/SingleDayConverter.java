@@ -1,5 +1,6 @@
 package com.zembrzuski.geolife.geolifeimporter.csv_kepler;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
