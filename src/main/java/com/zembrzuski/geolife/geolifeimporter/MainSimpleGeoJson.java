@@ -1,17 +1,17 @@
 package com.zembrzuski.geolife.geolifeimporter;
 
-import com.google.common.collect.Lists;
-import com.zembrzuski.geolife.geolifeimporter.csv_kepler.SingleFileProcessor;
-import com.zembrzuski.geolife.geolifeimporter.geojson.entity.LatLongPoint;
-import com.zembrzuski.geolife.geolifeimporter.geojson.service.LineStringToGeoJsonMapper;
-import com.zembrzuski.geolife.geolifeimporter.geojson.service.PointToGeoJsonMapper;
+import com.zembrzuski.geolife.geolifeimporter.csv_kepler.DirectoryProcessorForCsv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SpringBootApplication
 public class MainSimpleGeoJson implements CommandLineRunner {
@@ -21,27 +21,13 @@ public class MainSimpleGeoJson implements CommandLineRunner {
     }
 
     @Autowired
-    private PointToGeoJsonMapper pointToGeoJsonMapper;
-
-    @Autowired
-    private LineStringToGeoJsonMapper lineStringToGeoJsonMapper;
-
-    @Autowired
-    private SingleFileProcessor singleFileProcessor;
+    private DirectoryProcessorForCsv directoryProcessor;
 
     @Override
     public void run(String... strings) throws IOException {
-        //System.out.println(pointToGeoJsonMapper.pointToGeoJson(30.0346F, 51.2177F));
-
-//        List<LatLongPoint> points = Lists.newArrayList(
-//                new LatLongPoint(-30.0346F, -51.2177F),
-//                new LatLongPoint(-30.8494F, -51.8048F)
-//        );
-//
-//        System.out.println(lineStringToGeoJsonMapper.pointToGeoJson(points));
-
-        System.out.println("---");
-        singleFileProcessor.readFile();
+        String filePath = "/home/zembrzuski/labs/msccc/geolife_data/Data/000";
+        List<String> fileContent = directoryProcessor.readDirectory(filePath);
+        Files.write(Paths.get("//home/zembrzuski/labs/msccc/geolife_csvs_for_uber/000.csv"), fileContent);
     }
 
 }
