@@ -6,14 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.joda.time.DateTime;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeolocationPoint {
 
-    private float latitude;
-    private float longitute;
+    private BigDecimal latitude;
+    private BigDecimal longitute;
     private DateTime timestamp;
     private String transportationMode;
 

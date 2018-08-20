@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.TimeZone;
 
 import static org.junit.Assert.*;
@@ -17,15 +18,15 @@ public class BeijingConverterTest {
         DateTime dateTimeOutpt = new DateTime("2018-02-02T23:31:17.003Z", DateTimeZone.forTimeZone(TimeZone.getTimeZone("Asia/Shanghai")));
 
         GeolocationPoint inpt = GeolocationPoint.builder()
-                .latitude(32.1F)
-                .longitute(11.3F)
+                .latitude(new BigDecimal("39.9888083"))
+                .longitute(new BigDecimal("116.3064916"))
                 .transportationMode("a")
                 .timestamp(datetimeInput)
                 .build();
 
         GeolocationPoint expected = GeolocationPoint.builder()
-                .latitude(32.1F)
-                .longitute(11.3F)
+                .latitude(new BigDecimal("39.9888083"))
+                .longitute(new BigDecimal("116.3064916"))
                 .transportationMode("a")
                 .timestamp(dateTimeOutpt)
                 .build();

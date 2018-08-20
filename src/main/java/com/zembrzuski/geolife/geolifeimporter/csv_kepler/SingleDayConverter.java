@@ -5,6 +5,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class SingleDayConverter {
 
@@ -12,8 +14,8 @@ public class SingleDayConverter {
         String[] split = inp.split(",");
 
         return GeolocationPoint.builder()
-                .latitude(Float.valueOf(split[0]))
-                .longitute(Float.valueOf(split[1]))
+                .latitude(new BigDecimal(split[0]))
+                .longitute(new BigDecimal(split[1]))
                 .timestamp(dateConverter(split[2]))
                 .build();
     }

@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
@@ -15,8 +16,8 @@ public class CsvSerializerTest {
     @Test
     public void simpleSerialization() {
         GeolocationPoint geolocationPointBeijing = GeolocationPoint.builder()
-                .latitude(39.999694F)
-                .longitute(116.326063F)
+                .latitude(new BigDecimal("39.999694"))
+                .longitute(new BigDecimal("116.326063"))
                 .timestamp(new DateTime("2018-01-01T00:59:31.000Z",  DateTimeZone.forTimeZone(TimeZone.getTimeZone("Asia/Shanghai"))))
                 .build();
 

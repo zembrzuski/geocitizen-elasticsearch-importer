@@ -6,6 +6,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Months;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,8 +29,8 @@ public class SingleDayConverterTest {
 
 
         GeolocationPoint expected = new GeolocationPoint(
-                39.9888083F,
-                116.3064916F,
+                new BigDecimal("39.9888083"),
+                new BigDecimal("116.3064916"),
                 expectedDate,
                 null
         );
