@@ -29,7 +29,7 @@ public class DirectoryProcessorForCsv {
                 .walk(Paths.get(directoryPath))
                 .filter(x -> x.toFile().isFile())
                 .flatMap(x -> singleFileProcessor.readFile(x))
-                //.map(x -> singleDayConverter.convert(x))
+//                .map(x -> singleDayConverter.convert(x))
                 //.map(this::toBeijingDate)
                 ;
 

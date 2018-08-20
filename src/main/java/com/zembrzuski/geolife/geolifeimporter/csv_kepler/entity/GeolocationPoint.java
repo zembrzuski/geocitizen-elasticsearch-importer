@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import org.joda.time.DateTime;
 
 @Data
 @Builder
@@ -15,7 +14,7 @@ public class GeolocationPoint {
 
     private float latitude;
     private float longitute;
-    private Date timestamp;
+    private DateTime timestamp;
     private String transportationMode;
 
 }

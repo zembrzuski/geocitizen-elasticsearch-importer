@@ -1,16 +1,12 @@
 package com.zembrzuski.geolife.geolifeimporter.csv_kepler;
 
 import com.zembrzuski.geolife.geolifeimporter.csv_kepler.entity.GeolocationPoint;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Component
 public class SingleDayConverter {
-
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public GeolocationPoint convert(String inp) {
         String[] split = inp.split(",");
@@ -22,12 +18,8 @@ public class SingleDayConverter {
                 .build();
     }
 
-    Date dateConverter(String inpt) {
-        try {
-            return sdf.parse(inpt);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("could not convert date");
-        }
+    DateTime dateConverter(String inpt) {
+        return new DateTime(inpt,  DateTimeZone.UTC);
     }
 
 }
