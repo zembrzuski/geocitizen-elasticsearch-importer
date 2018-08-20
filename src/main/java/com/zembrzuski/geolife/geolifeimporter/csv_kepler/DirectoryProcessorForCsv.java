@@ -37,7 +37,7 @@ public class DirectoryProcessorForCsv {
                 .collect(Collectors.toList());
     }
 
-    private String toBeijingDate(String x) {
+    String toBeijingDate(String x) {
         String[] split = x.split(",");
         return split[0] + "," +split[1] + "," + timeZoneAdapter.fromGmtToBeijingDate(split[2]);
     }
