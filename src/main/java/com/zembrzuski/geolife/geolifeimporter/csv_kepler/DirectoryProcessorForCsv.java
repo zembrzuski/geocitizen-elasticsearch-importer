@@ -20,7 +20,7 @@ public class DirectoryProcessorForCsv {
     private SingleDayConverter singleDayConverter;
 
     @Autowired
-    private BeijingTimeZoneAdapter timeZoneAdapter;
+    private BeijingConverter beijingConverter;
 
     public List<String> readDirectory(String directoryPath) throws IOException {
         Stream<String> header = Stream.of("latitude,longitude,timestamp");
@@ -29,17 +29,12 @@ public class DirectoryProcessorForCsv {
                 .walk(Paths.get(directoryPath))
                 .filter(x -> x.toFile().isFile())
                 .flatMap(x -> singleFileProcessor.readFile(x))
-//                .map(x -> singleDayConverter.convert(x))
-                //.map(this::toBeijingDate)
+                .map(x -> singleDayConverter.convert(x))
+                .map(x -> beijingConverter.toBeijingTimezone(x))
                 ;
 
         return Stream.concat(header, body)
                 .collect(Collectors.toList());
-    }
-
-    String toBeijingDate(String x) {
-        String[] split = x.split(",");
-        return split[0] + "," +split[1] + "," + timeZoneAdapter.fromGmtToBeijingDate(split[2]);
     }
 
 }

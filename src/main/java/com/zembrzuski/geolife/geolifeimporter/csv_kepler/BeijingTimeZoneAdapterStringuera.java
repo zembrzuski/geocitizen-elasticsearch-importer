@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 @Component
-public class BeijingTimeZoneAdapter {
+public class BeijingTimeZoneAdapterStringuera {
 
     public String fromGmtToBrazilDate(String inp) {
         String dateInString = inp.replace("T", " ").replace("Z", "");

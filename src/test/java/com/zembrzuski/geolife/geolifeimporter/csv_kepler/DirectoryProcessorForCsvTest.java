@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class DirectoryProcessorForCsvTest {
 
     @Mock
-    BeijingTimeZoneAdapter adapter;
+    BeijingTimeZoneAdapterStringuera adapter;
 
     @InjectMocks
     DirectoryProcessorForCsv directoryProcessorForCsv;
