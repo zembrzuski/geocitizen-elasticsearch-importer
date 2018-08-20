@@ -1,5 +1,6 @@
 package com.zembrzuski.geolife.geolifeimporter.csv_kepler;
 
+import com.zembrzuski.geolife.geolifeimporter.csv_kepler.entity.GeolocationPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,20 +23,28 @@ public class DirectoryProcessorForCsv {
     @Autowired
     private BeijingConverter beijingConverter;
 
+    @Autowired
+    private CsvSerializer csvSerializer;
+
     public List<String> readDirectory(String directoryPath) throws IOException {
         Stream<String> header = Stream.of("latitude,longitude,timestamp");
 
-        Stream<String> body = Files
+        Stream<String> filesContent = Files
                 .walk(Paths.get(directoryPath))
                 .filter(x -> x.toFile().isFile())
-                .flatMap(x -> singleFileProcessor.readFile(x))
-                .map(x -> singleDayConverter.convert(x))
-                .map(x -> beijingConverter.toBeijingTimezone(x))
-                .map(x -> x.toString())
-            ;
+                .flatMap(x -> singleFileProcessor.readFile(x));
+
+        Stream<String> body = filesContentConverter(filesContent);
 
         return Stream.concat(header, body)
                 .collect(Collectors.toList());
+    }
+
+    Stream<String> filesContentConverter(Stream<String> filesContent) {
+        return filesContent
+                .map(x -> singleDayConverter.convert(x))
+                .map(x -> beijingConverter.toBeijingTimezone(x))
+                .map(x -> csvSerializer.serialize(x));
     }
 
 }
