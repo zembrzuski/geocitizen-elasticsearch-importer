@@ -31,7 +31,8 @@ public class DirectoryProcessorForCsv {
                 .flatMap(x -> singleFileProcessor.readFile(x))
                 .map(x -> singleDayConverter.convert(x))
                 .map(x -> beijingConverter.toBeijingTimezone(x))
-                ;
+                .map(x -> x.toString())
+            ;
 
         return Stream.concat(header, body)
                 .collect(Collectors.toList());
