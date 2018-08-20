@@ -10,7 +10,7 @@ public class LineFormatter {
         String date = split[5];
         String time = split[6];
 
-        String datetime = date + "T" + time + "Z";
+        String datetime = date + " " + time;
 
         return split[0] + "," + split[1] + "," + datetime;
     }
